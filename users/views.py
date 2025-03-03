@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from .models import CustomUser
 from .serializers import UserSerializer
+from rest_framework_simplejwt.tokens import AccessToken
 
 class GoogleLogin(APIView):
     def post(self, request):
@@ -29,13 +30,22 @@ class GoogleLogin(APIView):
                 }
             )
 
-            if not created:
-                # If the user already exists, return their data
-                return Response({"message": "User already exists", "data": UserSerializer(user).data}, status=200)
+            # if not created:
+            #     # If the user already exists, return their data
+            #     return Response({"message": "User already exists", "data": UserSerializer(user).data}, status=200)
 
-            # If the user is newly created, return their data
-            return Response(UserSerializer(user).data, status=201)
+            # # If the user is newly created, return their data
+            # return Response(UserSerializer(user).data, status=201)
+            # Generate only Access Token
+            access_token = str(AccessToken.for_user(user))  # Direct access token
 
+            response_data = {
+                "message": "User logged in successfully",
+                "user": UserSerializer(user).data,
+                "token": access_token  # Sending only access token
+            }            
+            return Response(response_data, status=200)
+            
         except Exception as e:
             # Handle any exceptions and return the error message
             return Response({"error": str(e)}, status=500)
