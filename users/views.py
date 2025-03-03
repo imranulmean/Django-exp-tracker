@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 from .models import CustomUser
 from .serializers import UserSerializer
 from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 class GoogleLogin(APIView):
     def post(self, request):
@@ -45,7 +46,7 @@ class GoogleLogin(APIView):
                 "token": access_token  # Sending only access token
             }            
             return Response(response_data, status=200)
-            
+
         except Exception as e:
             # Handle any exceptions and return the error message
             return Response({"error": str(e)}, status=500)
@@ -54,3 +55,9 @@ class GoogleLogin(APIView):
         """Generates a random password"""
         characters = string.ascii_letters + string.digits
         return ''.join(choice(characters) for _ in range(length))
+
+class Test(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({"message":"data testing"}, status=200)
