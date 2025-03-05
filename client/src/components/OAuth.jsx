@@ -32,7 +32,6 @@ export default function OAuth() {
                 }),
                 })
             const data = await res.json()
-            return;
             setLoading(false);
             if (res.ok){
                 dispatch(signInSuccess(data))

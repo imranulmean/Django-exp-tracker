@@ -12,20 +12,21 @@ export default function Header(){
     const { currentUser } = useSelector((state) => state.user);
 
     const handleSignout = async () => {
-        try {
-          const res = await fetch(`${BASE_API}/api/auth/signout`, {
-            method: 'POST',
-            credentials: "include",
-          });
-          const data = await res.json();
-          if (!res.ok) {
-            console.log(data.message);
-          } else {
-            dispatch(signoutSuccess());
-          }
-        } catch (error) {
-          console.log(error.message);
-        }
+      dispatch(signoutSuccess());
+        // try {
+        //   const res = await fetch(`${BASE_API}/api/auth/signout`, {
+        //     method: 'POST',
+        //     credentials: "include",
+        //   });
+        //   const data = await res.json();
+        //   if (!res.ok) {
+        //     console.log(data.message);
+        //   } else {
+        //     dispatch(signoutSuccess());
+        //   }
+        // } catch (error) {
+        //   console.log(error.message);
+        // }
       };    
     
     return (
@@ -46,8 +47,8 @@ export default function Header(){
               }
             >
               <Dropdown.Header>
-                <span className="block text-sm">{currentUser.displayName}</span>
-                <span className="block truncate text-sm font-medium">{currentUser.email}</span>
+                <span className="block text-sm">{currentUser.username}</span>
+                <span className="block truncate text-sm font-medium">{currentUser.username}</span>
               </Dropdown.Header>
               {/* <Dropdown.Item>Dashboard</Dropdown.Item>
               <Dropdown.Item>Settings</Dropdown.Item>
